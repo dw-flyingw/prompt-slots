@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Callable
 
-from animation import (
+from .animation import (
     AnimationFrame,
     render_animated_card,
     render_slot_css,

@@ -4,11 +4,8 @@ from __future__ import annotations
 
 import streamlit as st
 
-from animation import build_animation_frames
-from config import PromptConfig
-from extender import extend_prompt
-from generator import generate_example_prompts
-from streamlit_component import inject_slot_css, render_prompt_cards
+from generate_prompts import PromptConfig, build_animation_frames, extend_prompt, generate_example_prompts
+from generate_prompts.streamlit_component import inject_slot_css, render_prompt_cards
 
 # ---------------------------------------------------------------------------
 # Domain configs
