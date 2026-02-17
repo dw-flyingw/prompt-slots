@@ -5,9 +5,9 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING
 
-from .client import LLMClient
-from .config import LLMSettings, PromptConfig
-from .normalizer import normalize_prompts, random_sample_prompts
+from client import LLMClient
+from config import LLMSettings, PromptConfig
+from normalizer import normalize_prompts, random_sample_prompts
 
 if TYPE_CHECKING:
     pass

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from .client import LLMClient
-from .config import LLMSettings, PromptConfig
+from client import LLMClient
+from config import LLMSettings, PromptConfig
 
 
 def extend_prompt(

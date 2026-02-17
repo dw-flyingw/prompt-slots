@@ -8,7 +8,7 @@ import urllib.request
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .config import LLMSettings
+    from config import LLMSettings
 
 
 class LLMClient:

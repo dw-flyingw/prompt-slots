@@ -1,12 +1,9 @@
 """Demo showing generate-prompts across three domains."""
 
-from generate_prompts import (
-    PromptConfig,
-    extend_prompt,
-    generate_example_prompts,
-    render_animated_card,
-    build_animation_frames,
-)
+from config import PromptConfig
+from extender import extend_prompt
+from generator import generate_example_prompts
+from animation import render_animated_card, build_animation_frames
 
 # ---------------------------------------------------------------------------
 # Domain 1: Video Generation
