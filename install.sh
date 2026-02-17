@@ -1,23 +1,26 @@
 #!/usr/bin/env bash
-# install.sh — Copy the generate_prompts package into another project.
+# install.sh — Pull the generate_prompts package from GitHub into a project.
 #
 # Usage:
-#   ./install.sh /path/to/target/project
+#   curl -fsSL https://raw.githubusercontent.com/dw-flyingw/prompt-slots/main/install.sh | bash -s /path/to/project
 #
-# This copies the generate_prompts/ package directory and .env.example
-# into the target project so it can be used as a local library:
+#   Or clone the repo first and run locally:
+#   ./install.sh /path/to/project
+#
+# This fetches the generate_prompts/ package and .env.example so you
+# can use it as a local library:
 #
 #   from generate_prompts import PromptConfig, generate_example_prompts, extend_prompt
 #
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGE_DIR="$SCRIPT_DIR/generate_prompts"
+REPO="https://github.com/dw-flyingw/prompt-slots.git"
+BRANCH="main"
 
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <target-project-dir>"
     echo ""
-    echo "Copies the generate_prompts package into the target project."
+    echo "Pulls the generate_prompts package from GitHub into the target project."
     exit 1
 fi
 
@@ -28,10 +31,17 @@ if [ ! -d "$TARGET" ]; then
     exit 1
 fi
 
+# Create a temporary directory for the clone
+TMPDIR="$(mktemp -d)"
+trap 'rm -rf "$TMPDIR"' EXIT
+
+echo "Fetching prompt-slots from $REPO ($BRANCH)..."
+git clone --depth 1 --branch "$BRANCH" "$REPO" "$TMPDIR/prompt-slots" 2>/dev/null
+
 # Copy the package
 echo "Copying generate_prompts/ -> $TARGET/generate_prompts/"
 rm -rf "$TARGET/generate_prompts"
-cp -r "$PACKAGE_DIR" "$TARGET/generate_prompts"
+cp -r "$TMPDIR/prompt-slots/generate_prompts" "$TARGET/generate_prompts"
 
 # Remove any __pycache__ from the copy
 find "$TARGET/generate_prompts" -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
@@ -39,7 +49,7 @@ find "$TARGET/generate_prompts" -type d -name __pycache__ -exec rm -rf {} + 2>/d
 # Copy .env.example if it doesn't already exist in target
 if [ ! -f "$TARGET/.env.example" ]; then
     echo "Copying .env.example -> $TARGET/.env.example"
-    cp "$SCRIPT_DIR/.env.example" "$TARGET/.env.example"
+    cp "$TMPDIR/prompt-slots/.env.example" "$TARGET/.env.example"
 else
     echo "Skipping .env.example (already exists in target)"
 fi
