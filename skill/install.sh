@@ -18,10 +18,10 @@
 set -euo pipefail
 
 SKILL_DIR="$HOME/.claude/skills/add-prompt-slots"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd 2>/dev/null)" || SCRIPT_DIR=""
 
 # Check if running from local repo or needs to fetch from GitHub
-if [ -f "$SCRIPT_DIR/SKILL.md" ]; then
+if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/SKILL.md" ]; then
     SOURCE="$SCRIPT_DIR/SKILL.md"
 else
     # Fetch from GitHub
