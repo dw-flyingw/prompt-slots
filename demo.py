@@ -98,8 +98,7 @@ config = DOMAINS[domain]
 # Generate prompts
 # ---------------------------------------------------------------------------
 if st.button("Generate Prompts", type="primary"):
-    with st.spinner("Generating..."):
-        prompts = generate_example_prompts(config)
+    prompts = generate_example_prompts(config)
     st.session_state["prompts"] = prompts
     st.session_state["domain"] = domain
     # Build animation frames from fallback -> generated
