@@ -98,8 +98,7 @@ config = DOMAINS[domain]
 # Generate prompts
 # ---------------------------------------------------------------------------
 if st.button("Generate Prompts", type="primary"):
-    with st.spinner("Generating..."):
-        prompts = generate_example_prompts(config)
+    prompts = generate_example_prompts(config)
     st.session_state["prompts"] = prompts
     st.session_state["domain"] = domain
     # Build animation frames from fallback -> generated
@@ -130,6 +129,11 @@ render_prompt_cards(
     on_use=on_use,
 )
 
+# Clear animation frames after rendering so subsequent reruns
+# (e.g. clicking "Use Prompt") show static cards, not repeat animations.
+if show_frames:
+    st.session_state["frames"] = None
+
 # ---------------------------------------------------------------------------
 # Extend a selected prompt
 # ---------------------------------------------------------------------------
@@ -148,7 +152,7 @@ if st.button("Extend", disabled=not user_input.strip()):
     with st.spinner("Extending..."):
         try:
             enhanced = extend_prompt(user_input.strip(), config)
-            st.success("Extended prompt:")
-            st.markdown(f"> {enhanced}")
+            st.session_state["selected_prompt"] = enhanced
+            st.rerun()
         except RuntimeError as exc:
             st.error(f"LLM error: {exc}")

@@ -45,13 +45,23 @@ def render_prompt_cards(
     """
     import streamlit as st
 
+    # Auto-increment a counter each time animation_frames are provided so
+    # every render gets unique @keyframes names and the browser replays the
+    # CSS animation instead of ignoring a duplicate animation-name.
+    counter_key = f"_slot_anim_counter_{key_prefix}"
+    st.session_state.setdefault(counter_key, 0)
+    if animation_frames:
+        st.session_state[counter_key] += 1
+    anim_id = st.session_state[counter_key]
+
     columns = st.columns(len(prompts))
 
     for idx, prompt in enumerate(prompts):
         with columns[idx]:
             if animation_frames and idx < len(animation_frames):
+                card_id = f"{anim_id}-{idx}"
                 st.markdown(
-                    render_animated_card(animation_frames[idx]),
+                    render_animated_card(animation_frames[idx], card_id=card_id),
                     unsafe_allow_html=True,
                 )
             else:
