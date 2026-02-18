@@ -24,7 +24,7 @@ This repo includes a **Claude Code skill** (`skill/SKILL.md`) that lets Claude a
 **From GitHub (no clone needed):**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dw-flyingw/prompt-slots/main/skill/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/dw-flyingw/prompt-slots/master/skill/install.sh | bash
 ```
 
 **Manual install:**

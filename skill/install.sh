@@ -5,7 +5,7 @@
 #   ./skill/install.sh
 #
 #   Or from anywhere:
-#   curl -fsSL https://raw.githubusercontent.com/dw-flyingw/prompt-slots/main/skill/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/dw-flyingw/prompt-slots/master/skill/install.sh | bash
 #
 # Copies the SKILL.md into ~/.claude/skills/add-prompt-slots/ so Claude Code
 # can discover and use it. After install, invoke with:
@@ -29,7 +29,7 @@ else
     trap 'rm -rf "$TMPDIR"' EXIT
     REPO="https://github.com/dw-flyingw/prompt-slots.git"
     echo "Fetching skill from $REPO..."
-    git clone --depth 1 --branch main "$REPO" "$TMPDIR/prompt-slots" 2>/dev/null
+    git clone --depth 1 --branch master "$REPO" "$TMPDIR/prompt-slots" 2>/dev/null
     SOURCE="$TMPDIR/prompt-slots/skill/SKILL.md"
 fi
 
