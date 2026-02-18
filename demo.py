@@ -122,7 +122,6 @@ st.subheader("Example Prompts")
 
 def on_use(prompt: str) -> None:
     st.session_state["selected_prompt"] = prompt
-    st.session_state["prompt_input"] = prompt
 
 render_prompt_cards(
     prompts,
@@ -148,7 +147,6 @@ user_input = st.text_area(
     value=selected,
     height=100,
     placeholder="Click 'Use Prompt' above or type your own...",
-    key="prompt_input",
 )
 
 if st.button("Extend", disabled=not user_input.strip()):
@@ -156,7 +154,6 @@ if st.button("Extend", disabled=not user_input.strip()):
         try:
             enhanced = extend_prompt(user_input.strip(), config)
             st.session_state["selected_prompt"] = enhanced
-            st.session_state["prompt_input"] = enhanced
             st.rerun()
         except RuntimeError as exc:
             st.error(f"LLM error: {exc}")
