@@ -9,19 +9,51 @@ A lightweight Python library for generating and enhancing LLM prompts with built
 - **Animate** prompt transitions with a slot-machine CSS/HTML effect (for web UIs)
 - **Normalize** prompt lists to a guaranteed count, padding from a fallback pool when needed
 
+## Claude Code skill
+
+This repo includes a **Claude Code skill** (`skill/SKILL.md`) that lets Claude automatically integrate generate-prompts into any project. Once installed, just tell Claude "add example prompts to this app" and it will handle copying the library, writing domain-specific config, wiring up the UI, and configuring the LLM connection.
+
+### Installing the skill
+
+**From a local clone:**
+
+```bash
+./skill/install.sh
+```
+
+**From GitHub (no clone needed):**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dw-flyingw/prompt-slots/main/skill/install.sh | bash
+```
+
+**Manual install:**
+
+```bash
+mkdir -p ~/.claude/skills/add-prompt-slots
+cp skill/SKILL.md ~/.claude/skills/add-prompt-slots/SKILL.md
+```
+
+After install, the skill is available in any Claude Code session. Invoke it by describing what you need ("add example prompts to this project") or by name (`/add-prompt-slots`).
+
 ## Project structure
 
 ```
 generate-prompts/
-  animation.py            # Slot-machine CSS/HTML builders
-  client.py               # Stdlib HTTP client for OpenAI-compatible APIs
-  config.py               # PromptConfig and LLMSettings dataclasses
-  extender.py             # extend_prompt() — enhance a prompt via LLM
-  generator.py            # generate_example_prompts() — generate via LLM with fallback
-  normalizer.py           # normalize_prompts(), random_sample_prompts()
-  streamlit_component.py  # Optional Streamlit helpers (cards, CSS injection)
-  demo.py                 # Interactive Streamlit demo
-  main.py                 # CLI demo across three domains
+  generate_prompts/
+    animation.py            # Slot-machine CSS/HTML builders
+    client.py               # Stdlib HTTP client for OpenAI-compatible APIs
+    config.py               # PromptConfig and LLMSettings dataclasses
+    extender.py             # extend_prompt() — enhance a prompt via LLM
+    generator.py            # generate_example_prompts() — generate via LLM with fallback
+    normalizer.py           # normalize_prompts(), random_sample_prompts()
+    streamlit_component.py  # Optional Streamlit helpers (cards, CSS injection)
+  skill/
+    SKILL.md                # Claude Code skill for automated integration
+    install.sh              # Skill installer script
+  demo.py                   # Interactive Streamlit demo
+  main.py                   # CLI demo across three domains
+  install.sh                # Library installer script
   pyproject.toml
   .env.example
 ```
