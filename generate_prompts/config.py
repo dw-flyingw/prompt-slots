@@ -19,7 +19,8 @@ class LLMSettings:
 
     base_url: str = field(
         default_factory=lambda: os.environ.get(
-            "PROMPT_LLM_BASE_URL", "http://localhost:8000/v1"
+            "PROMPT_LLM_BASE_URL",
+            "http://gpt-oss-120b.models.mlds-kserve.hst.rdlabs.hpecorp.net/v1",
         )
     )
     model: str = field(

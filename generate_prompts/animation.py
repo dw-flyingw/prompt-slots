@@ -31,9 +31,6 @@ SLOT_CSS = """\
     display: flex;
     flex-direction: column;
     transform: translateY(0);
-    animation-name: slot-reel-stop;
-    animation-timing-function: cubic-bezier(0.18, 0.9, 0.24, 1.06);
-    animation-fill-mode: forwards;
 }
 .example-slot-item {
     min-height: 150px;
@@ -44,22 +41,25 @@ SLOT_CSS = """\
     line-height: 1.35;
     overflow: hidden;
 }
-@keyframes slot-reel-stop {
-    0% {
+"""
+
+_KEYFRAMES_TEMPLATE = """\
+@keyframes {name} {{
+    0% {{
         transform: translateY(0);
         filter: blur(0.6px);
-    }
-    82% {
+    }}
+    82% {{
         transform: translateY(calc(-3 * var(--slot-item-height)));
         filter: blur(0);
-    }
-    92% {
+    }}
+    92% {{
         transform: translateY(calc(-3 * var(--slot-item-height) + 8px));
-    }
-    100% {
+    }}
+    100% {{
         transform: translateY(calc(-3 * var(--slot-item-height)));
-    }
-}
+    }}
+}}
 """
 
 DEFAULT_DURATIONS_MS = [900, 1200, 1500]
@@ -119,11 +119,24 @@ def render_static_card(prompt: str) -> str:
     return f"<div class='example-slot-card'>{html.escape(prompt)}</div>"
 
 
-def render_animated_card(frame: AnimationFrame) -> str:
-    """Return an HTML block for one animated slot-machine reel."""
+def render_animated_card(frame: AnimationFrame, card_id: str = "") -> str:
+    """Return an HTML block for one animated slot-machine reel.
+
+    *card_id* should be unique across renders (e.g. include a counter
+    that increments each time the animation is triggered) so the browser
+    treats the ``@keyframes`` rule as new and replays the animation.
+    """
+    kf_name = f"slot-reel-{card_id}" if card_id else "slot-reel-stop"
+    keyframes_css = _KEYFRAMES_TEMPLATE.format(name=kf_name)
     return (
+        f"<style>{keyframes_css}</style>"
         "<div class='example-slot-shell'>"
-        f"<div class='example-slot-reel' style='animation-duration:{frame.duration_ms}ms;'>"
+        f"<div class='example-slot-reel' style='"
+        f"animation-name:{kf_name};"
+        f"animation-duration:{frame.duration_ms}ms;"
+        f"animation-timing-function:cubic-bezier(0.18,0.9,0.24,1.06);"
+        f"animation-fill-mode:forwards;"
+        f"'>"
         f"<div class='example-slot-item'>{html.escape(frame.from_prompt)}</div>"
         f"<div class='example-slot-item'>{html.escape(frame.middle_1)}</div>"
         f"<div class='example-slot-item'>{html.escape(frame.middle_2)}</div>"
